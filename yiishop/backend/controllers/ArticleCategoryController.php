@@ -1,5 +1,6 @@
 <?php
 namespace backend\controllers;
+use backend\filters\RbacFilter;
 use backend\models\ArticleCategory;
 use yii\data\Pagination;
 use yii\web\Controller;
@@ -12,7 +13,7 @@ class ArticleCategoryController extends Controller{
         $query = ArticleCategory::find()->where(['!=','status','-1']);
         $pager = new Pagination([
             'totalCount'=>$query->count(),
-            'defaultPageSize'=>10,
+            'defaultPageSize'=>6,
         ]);
         $models = $query->limit($pager->limit)->offset($pager->offset)->all();
         return $this->render('index',['model'=>$models,'pager'=>$pager]);
@@ -57,5 +58,12 @@ class ArticleCategoryController extends Controller{
     public function actionDelete($id){
         ArticleCategory::findOne($id)->delete();
         return $this->redirect(['article-category/index']);
+    }
+    public function behaviors(){
+        return [
+            'rbac'=>[
+                'class'=>RbacFilter::className(),
+            ]
+        ];
     }
 }

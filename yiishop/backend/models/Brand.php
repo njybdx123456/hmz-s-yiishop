@@ -3,10 +3,10 @@ namespace backend\models;
 use yii\db\ActiveRecord;
 
 class Brand extends ActiveRecord{
-    public $logoPath;//保存图片路径
+    public $imgFile;//保存图片路径
    public static function getStatusOptions($hidden_del=true){
        $options=[
-           -1=>'删除', 0=>'隐藏', 1=>'正常'
+           -1=>'删除', 0=>'隐藏', 1=>'显示'
        ];
        if($hidden_del){
            unset($options['-1']);
@@ -15,6 +15,7 @@ class Brand extends ActiveRecord{
    }
     public function rules(){
         return [
+            [['name','intro','sort'],'required'],
             [['intro'], 'string'],
             [['sort', 'status'], 'integer'],
             [['name'], 'string', 'max' => 50],
